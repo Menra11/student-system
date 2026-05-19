@@ -1,4 +1,5 @@
-import pool from '@/server/api/db'
+import pool from '@@/server/api/db'
+
 import type { CourseResponse } from '@/types/course'
 
 export default defineEventHandler(async (event) => {

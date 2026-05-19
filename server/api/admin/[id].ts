@@ -1,4 +1,4 @@
-import pool from '@/server/api/db'
+import pool from '@@/server/api/db'
 
 export default defineEventHandler(async (event) => {
   const admin_id = event.context.params.id

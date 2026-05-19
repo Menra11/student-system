@@ -1,4 +1,4 @@
-import pool from '@/server/api/db'
+import pool from '@@/server/api/db'
 
 export default defineEventHandler(async () => {
   const query = `SELECT v.video_id,v.video_title,v.video_description,v.video_url,v.video_duration,c.course_name 

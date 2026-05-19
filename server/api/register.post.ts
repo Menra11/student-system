@@ -1,4 +1,5 @@
-import pool from '@/server/api/db'
+import pool from '@@/server/api/db'
+
 import type { RegisterRequest } from '@/types/register'
 
 export default defineEventHandler(async (event) => {
