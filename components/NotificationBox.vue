@@ -1,7 +1,10 @@
 <template>
   <!-- 通知消息 -->
   <Transition name="slide-fade">
-    <div v-if="noticeData.show" class="fixed top-16 right-8 z-50">
+    <div
+      v-if="noticeData.show"
+      class="fixed top-16 right-8 z-50"
+    >
       <div
         :class="[
           'px-4 py-3 rounded-lg shadow-lg text-white transition-all duration-300 transform',
@@ -31,11 +34,11 @@
 // 通知状态
 defineProps<{
   noticeData: {
-    show: boolean;
-    message: string;
-    type: string;
-  };
-}>();
+    show: boolean
+    message: string
+    type: string
+  }
+}>()
 </script>
 
 <style scoped>

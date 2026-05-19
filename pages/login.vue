@@ -4,11 +4,18 @@
       <div class="bg-white rounded-2xl shadow-blue overflow-hidden">
         <!-- 头部装饰 -->
         <div class="bg-blue-700 py-6 text-center">
-          <h1 class="text-2xl font-bold text-white">用户登录</h1>
+          <h1 class="text-2xl font-bold text-white">
+            用户登录
+          </h1>
         </div>
 
         <!-- 登录表单 -->
-        <form class="p-8" ref="loginForm" :model="loginData" rules>
+        <form
+          ref="loginForm"
+          class="p-8"
+          :model="loginData"
+          rules
+        >
           <!-- 错误提示 -->
           <div
             v-if="errorMessage"
@@ -33,11 +40,11 @@
             <div class="relative">
               <input
                 id="username"
+                v-model="loginData.user_id"
                 type="number"
                 class="w-full px-4 py-3 pl-10 border border-gray-300 rounded-lg focus:outline-none input-focus transition-all duration-300"
                 placeholder="请输入您的ID"
-                v-model="loginData.user_id"
-              />
+              >
               <div
                 class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
               >
@@ -57,11 +64,11 @@
             <div class="relative">
               <input
                 id="password"
+                v-model="loginData.password"
                 type="password"
                 class="w-full px-4 py-3 pl-10 border border-gray-300 rounded-lg focus:outline-none input-focus transition-all duration-300"
                 placeholder="请输入您的密码"
-                v-model="loginData.password"
-              />
+              >
               <div
                 class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
               >
@@ -85,13 +92,13 @@
                 }"
               >
                 <input
+                  id="学生"
+                  v-model="loginData.user"
                   type="radio"
                   name="user"
-                  id="学生"
                   value="student"
-                  v-model="loginData.user"
                   class="hidden"
-                />
+                >
                 <div class="flex flex-col items-center">
                   <div
                     class="w-10 h-10 rounded-full flex items-center justify-center text-lg transition-all duration-300"
@@ -103,7 +110,7 @@
                   >
                     <font-awesome-icon :icon="['fas', 'user-graduate']" />
                   </div>
-                  <span class="mt-1">学生</span>
+                  <span class="mt-1 ">学生 </span>
                 </div>
               </label>
 
@@ -116,13 +123,13 @@
                 }"
               >
                 <input
+                  id="教师"
+                  v-model="loginData.user"
                   type="radio"
                   name="user"
-                  id="教师"
                   value="teacher"
-                  v-model="loginData.user"
                   class="hidden"
-                />
+                >
                 <div class="flex flex-col items-center">
                   <div
                     class="w-10 h-10 rounded-full flex items-center justify-center text-lg transition-all duration-300"
@@ -147,13 +154,13 @@
                 }"
               >
                 <input
+                  id="管理员"
+                  v-model="loginData.user"
                   type="radio"
                   name="user"
-                  id="管理员"
                   value="admin"
-                  v-model="loginData.user"
                   class="hidden"
-                />
+                >
                 <div class="flex flex-col items-center">
                   <div
                     class="w-10 h-10 rounded-full flex items-center justify-center text-lg transition-all duration-300"
@@ -177,13 +184,14 @@
             class="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold py-3 px-4 rounded-lg shadow-md transition-all duration-300 transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
             @click="useLogin"
           >
-            <span v-if="!isLoading"
-              ><font-awesome-icon
-                :icon="['fas', 'sign-in-alt']"
-                class="mr-2"
-              />登录</span
+            <span v-if="!isLoading"><font-awesome-icon
+              :icon="['fas', 'sign-in-alt']"
+              class="mr-2"
+            />登录</span>
+            <span
+              v-else
+              class="flex items-center"
             >
-            <span v-else class="flex items-center">
               <font-awesome-icon
                 :icon="['fas', 'spinner']"
                 class="animate-spin mr-2"
@@ -198,7 +206,10 @@
               class="text-blue-600 hover:text-blue-800 text-sm font-medium transition-colors duration-300 cursor-pointer"
               @click="useRegister"
             >
-              <font-awesome-icon :icon="['fas', 'user-plus']" class="mr-1" />
+              <font-awesome-icon
+                :icon="['fas', 'user-plus']"
+                class="mr-1"
+              />
               注册
             </span>
             <a
@@ -223,138 +234,118 @@
 </template>
 
 <script lang="ts" setup>
-import type { loginData, LoginResponse } from "@/types/login";
-import { useMyUserStore } from "@/stores/user";
-import { useMyNotificationStore } from "@/stores/notification";
-const router = useRouter();
-const userStore = useMyUserStore();
-const notificationStore = useMyNotificationStore();
+import type { loginData, LoginResponse } from '@/types/login'
+import { useMyUserStore } from '@/stores/user'
+import { useMyNotificationStore } from '@/stores/notification'
+
+const router = useRouter()
+const userStore = useMyUserStore()
+const notificationStore = useMyNotificationStore()
 // 收集输入的账户密码
-let loginData = reactive<loginData>({
+const loginData = reactive<loginData>({
   user_id: 2025001,
-  password: "123456",
-  user: "admin",
-});
+  password: '123456',
+  user: 'admin',
+})
 // 登录表单响应
-let loginForm = ref();
-const isLoading = ref(false);
-const errorMessage = ref("");
+const loginForm = ref()
+const isLoading = ref(false)
+const errorMessage = ref('')
 
 const validateForm = (): boolean => {
   if (!loginData.user_id.toString().trim()) {
-    errorMessage.value = "用户ID不能为空";
-    return false;
+    errorMessage.value = '用户ID不能为空'
+    return false
   }
 
   if (!loginData.password) {
-    errorMessage.value = "密码不能为空";
-    return false;
+    errorMessage.value = '密码不能为空'
+    return false
   }
 
   if (loginData.password.length < 4) {
-    errorMessage.value = "密码长度至少为4位";
-    return false;
+    errorMessage.value = '密码长度至少为4位'
+    return false
   }
 
-  return true;
-};
+  return true
+}
 const handleLoginError = (response: LoginResponse) => {
   // 根据后端返回的错误码显示不同的错误信息
   switch (response.errorCode) {
-    case "INVALID_CREDENTIALS":
-      errorMessage.value = "用户名或密码错误";
-      break;
-    case "ACCOUNT_LOCKED":
-      errorMessage.value = "账户已被锁定，请联系管理员";
-      break;
-    case "USER_NOT_FOUND":
-      errorMessage.value = "用户不存在";
-      break;
-    case "INSUFFICIENT_PERMISSION":
-      errorMessage.value = "您没有权限登录此系统";
-      break;
+    case 'INVALID_CREDENTIALS':
+      errorMessage.value = '用户名或密码错误'
+      break
+    case 'ACCOUNT_LOCKED':
+      errorMessage.value = '账户已被锁定，请联系管理员'
+      break
+    case 'USER_NOT_FOUND':
+      errorMessage.value = '用户不存在'
+      break
+    case 'INSUFFICIENT_PERMISSION':
+      errorMessage.value = '您没有权限登录此系统'
+      break
     default:
-      errorMessage.value = response.message || "登录失败，请稍后再试";
+      errorMessage.value = response.message || '登录失败，请稍后再试'
   }
-};
-const handleNetworkError = (error: any) => {
-  if (error.response) {
-    // 服务器返回了错误状态码
-    const status = error.response.status;
-    switch (status) {
-      case 401:
-        errorMessage.value = "身份验证失败";
-        break;
-      case 403:
-        errorMessage.value = "访问被拒绝";
-        break;
-      case 500:
-        errorMessage.value = "服务器内部错误";
-        break;
-      default:
-        errorMessage.value = `请求失败: ${status}`;
-    }
-  } else if (error.request) {
-    // 请求已发送但无响应
-    errorMessage.value = "无法连接到服务器，请检查网络连接";
-  } else {
-    // 其他错误
-    errorMessage.value = "发生未知错误: " + error.message;
-  }
-};
+}
 
 // 登录的回调
 const useLogin = async () => {
-  errorMessage.value = "";
-  if (!validateForm()) return;
+  errorMessage.value = ''
+  if (!validateForm()) return
   try {
-    isLoading.value = true;
-    const response = await $fetch<LoginResponse>("/api/login", {
-      method: "POST",
+    isLoading.value = true
+    const response = await $fetch<LoginResponse>('/api/login', {
+      method: 'POST',
       body: {
         user_from: loginData,
       },
-    });
+    })
 
     if (response.success) {
-      userStore.setToken(response.token);
-      await userStore.getUser(loginData.user_id, loginData.user);
+      userStore.setToken(response.token)
+      await userStore.getUser(loginData.user_id, loginData.user)
       notificationStore.setNotification({
-        message: "登录成功",
-        type: "success",
-      });
+        message: '登录成功',
+        type: 'success',
+      })
       if (import.meta.server) {
         // 设置cookie，有效期与token相同
         document.cookie = `token=${response.token}; path=/; max-age=${
           60 * 60 * 24
-        }`; // 1天
+        }` // 1天
       }
       if (import.meta.client) {
-        localStorage.setItem("token", response.token);
+        localStorage.setItem('token', response.token)
       }
-      if (loginData.user === "student") {
-        router.push(`/student/${loginData.user_id}`);
-      } else if (loginData.user === "teacher") {
-        router.push(`/teacher/${loginData.user_id}`);
-      } else if (loginData.user === "admin") {
-        router.push(`/admin/${loginData.user_id}`);
+      if (loginData.user === 'student') {
+        router.push(`/student/${loginData.user_id}`)
       }
-    } else {
-      // 处理登录失败
-      handleLoginError(response);
+      else if (loginData.user === 'teacher') {
+        router.push(`/teacher/${loginData.user_id}`)
+      }
+      else if (loginData.user === 'admin') {
+        router.push(`/admin/${loginData.user_id}`)
+      }
     }
-  } catch (error) {
-    console.log(error);
-
-    handleNetworkError(error);
-  } finally {
-    // 重置加载状态
-    isLoading.value = false;
+    else {
+      // 处理登录失败
+      handleLoginError(response)
+    }
   }
-};
+  catch (error) {
+    console.log(error)
+    errorMessage.value = error.message
+  }
+  finally {
+    // 重置加载状态
+    isLoading.value = false
+  }
+}
 const useRegister = () => {
-  router.push("/register");
-};
+  router.push('/register')
+}
 </script>
 
 <style scoped>

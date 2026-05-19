@@ -1,11 +1,11 @@
-import { defineStore } from "pinia";
+import { defineStore } from 'pinia'
 
-export const useMyNotificationStore = defineStore("myNotificationStore", {
+export const useMyNotificationStore = defineStore('myNotificationStore', {
   state: () => ({
     notice: {
       show: false,
-      message: "",
-      type: "success" as "success" | "error",
+      message: '',
+      type: 'success' as 'success' | 'error',
     },
   }),
   actions: {
@@ -14,20 +14,20 @@ export const useMyNotificationStore = defineStore("myNotificationStore", {
       message,
       type,
     }: {
-      message: string;
-      type: "success" | "error";
+      message: string
+      type: 'success' | 'error'
     }) {
       this.notice = {
         show: true,
         message,
         type,
-      };
+      }
     },
     // 显示通知
     showNotification() {
       setTimeout(() => {
-        this.notice.show = false;
-      }, 3000);
+        this.notice.show = false
+      }, 3000)
     },
   },
-});
+})

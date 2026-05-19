@@ -1,14 +1,14 @@
 export interface Course {
-  course_id: number;
-  course_name: string;
-  credit: number;
-  classroom: string;
-  schedule: string;
-  description: string;
+  course_id: number
+  course_name: string
+  credit: number
+  classroom: string
+  schedule: string
+  description: string
 }
 export interface CoursesResponse {
-  Courses: Course[];
+  Courses: Course[]
 }
 export interface CourseResponse {
-  Course: Course;
+  Course: Course
 }

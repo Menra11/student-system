@@ -1,9 +1,10 @@
-import pool from "@/server/api/db";
+import pool from '@/server/api/db'
+
 export default defineEventHandler(async (event) => {
   try {
-    const student_id = event.context.params.id;
-    const video_id  = event.context.params.videoId;
-    
+    const student_id = event.context.params.id
+    const video_id = event.context.params.videoId
+
     // 获取视频基本信息
     const [video] = await pool.query(`
       SELECT v.video_id,v.video_title,v.video_description,v.video_url,v.video_duration,t.teacher_name,c.course_name 
@@ -12,23 +13,24 @@ export default defineEventHandler(async (event) => {
       left join teacher t on c.teacher_id = t.teacher_id
       where v.video_id = ?;
     `, [video_id])
-    
+
     if (!video) {
       return {
         success: false,
-        message: "获取视频失败",
-      };
+        message: '获取视频失败',
+      }
     }
-    
+
     // 获取视频阅读记录
-    let progress:any;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let progress: any
     progress = await pool.query(`
       SELECT *
       FROM student_video_progress sp
       WHERE sp.student_id = ? AND sp.video_id = ?;
     `, [student_id, video_id])
-    
-    if(!progress){
+
+    if (!progress) {
       await pool.query(`
         INSERT INTO student_video_progress (student_id, video_id,progress,completed)
         VALUES (?, ?,0,0);
@@ -39,16 +41,17 @@ export default defineEventHandler(async (event) => {
       WHERE sp.student_id = ? AND sp.video_id = ?;
     `, [student_id, video_id])
     }
-    console.log(video);
-    
+    console.log(video)
+
     return {
       video: video,
-      progress: progress[0]
+      progress: progress[0],
     }
-  } catch (error) {
+  }
+  catch (error) {
     return {
-        success: false,
-        message: "视频访问失败",
-      };
+      success: false,
+      message: '视频访问失败' + error.message,
+    }
   }
 })

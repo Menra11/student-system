@@ -3,10 +3,13 @@
     <!-- 返回按钮 -->
     <div class="mb-6">
       <button
-        @click="goBack"
         class="flex items-center text-blue-600 hover:text-blue-800 font-medium"
+        @click="goBack"
       >
-        <font-awesome-icon :icon="['fas', 'arrow-left']" class="mr-2" />
+        <font-awesome-icon
+          :icon="['fas', 'arrow-left']"
+          class="mr-2"
+        />
         返回课程列表
       </button>
     </div>
@@ -23,7 +26,7 @@
             @play="startTimer"
             @pause="pauseTimer"
             @ended="videoEnded"
-          ></video>
+          />
 
           <!-- 视频加载指示器 -->
           <div
@@ -39,22 +42,24 @@
         <!-- 视频信息卡片 -->
         <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
           <div class="bg-blue-50 p-4 rounded-lg">
-            <h3 class="text-sm font-medium text-blue-800 mb-1">观看进度</h3>
+            <h3 class="text-sm font-medium text-blue-800 mb-1">
+              观看进度
+            </h3>
             <div class="flex items-center">
               <div class="w-full bg-gray-200 rounded-full h-2.5">
                 <div
                   class="bg-blue-600 h-2.5 rounded-full"
                   :style="{ width: `${progressPercentage}%` }"
-                ></div>
+                />
               </div>
-              <span class="ml-2 text-sm text-gray-700"
-                >{{ progressPercentage }}%</span
-              >
+              <span class="ml-2 text-sm text-gray-700">{{ progressPercentage }}%</span>
             </div>
           </div>
 
           <div class="bg-blue-50 p-4 rounded-lg">
-            <h3 class="text-sm font-medium text-blue-800 mb-1">已观看时间</h3>
+            <h3 class="text-sm font-medium text-blue-800 mb-1">
+              已观看时间
+            </h3>
             <div class="flex items-center">
               <font-awesome-icon
                 :icon="['fas', 'clock']"
@@ -67,7 +72,9 @@
           </div>
 
           <div class="bg-blue-50 p-4 rounded-lg">
-            <h3 class="text-sm font-medium text-blue-800 mb-1">视频时长</h3>
+            <h3 class="text-sm font-medium text-blue-800 mb-1">
+              视频时长
+            </h3>
             <div class="flex items-center">
               <font-awesome-icon
                 :icon="['fas', 'hourglass']"
@@ -86,7 +93,10 @@
     <div class="bg-white rounded-2xl shadow-blue overflow-hidden">
       <div class="bg-gradient-to-r from-blue-600 to-blue-700 py-4 px-6">
         <h2 class="text-xl font-bold text-white">
-          <font-awesome-icon :icon="['fas', 'info-circle']" class="mr-2" />
+          <font-awesome-icon
+            :icon="['fas', 'info-circle']"
+            class="mr-2"
+          />
           课程信息
         </h2>
       </div>
@@ -108,17 +118,27 @@
             <h3 class="text-xl font-bold text-gray-800 mb-2">
               {{ videoData.video_title }}
             </h3>
-            <p class="text-gray-600 mb-4">{{ videoData.video_description }}</p>
+            <p class="text-gray-600 mb-4">
+              {{ videoData.video_description }}
+            </p>
 
             <div class="grid grid-cols-2 gap-4">
               <div>
-                <h4 class="text-sm font-medium text-gray-500">讲师</h4>
-                <p class="font-medium">{{ videoData.teacher_name }}</p>
+                <h4 class="text-sm font-medium text-gray-500">
+                  讲师
+                </h4>
+                <p class="font-medium">
+                  {{ videoData.teacher_name }}
+                </p>
               </div>
 
               <div>
-                <h4 class="text-sm font-medium text-gray-500">完成率</h4>
-                <p class="font-medium text-blue-600">{{ completionRate }}%</p>
+                <h4 class="text-sm font-medium text-gray-500">
+                  完成率
+                </h4>
+                <p class="font-medium text-blue-600">
+                  {{ completionRate }}%
+                </p>
               </div>
             </div>
           </div>
@@ -129,188 +149,189 @@
 </template>
 
 <script setup lang="ts">
-import { useMyUserStore } from "@/stores/user";
-import { useMyNotificationStore } from "~/stores/notification";
-import type { VideoGet, VideoResponse, Progress } from "@/types/video";
+import { useMyUserStore } from '@/stores/user'
+import { useMyNotificationStore } from '~/stores/notification'
+import type { VideoGet, VideoResponse, Progress } from '@/types/video'
+
 definePageMeta({
-  title: "课程视频", // 设置页面标题
-});
-const route = useRoute();
-const router = useRouter();
-const userStore = useMyUserStore();
-const notificationStore = useMyNotificationStore();
+  title: '课程视频', // 设置页面标题
+})
+const route = useRoute()
+const router = useRouter()
+const userStore = useMyUserStore()
+const notificationStore = useMyNotificationStore()
 
 // 视频播放器引用
-const videoPlayer = ref<HTMLVideoElement | null>(null);
-const videoSource = ref("");
-const isLoading = ref(true);
+const videoPlayer = ref<HTMLVideoElement | null>(null)
+const videoSource = ref('')
+const isLoading = ref(true)
 
 // 计时相关状态
-const isPlaying = ref(false);
-const timerInterval = ref<number | null>(null);
-const watchedTime = ref(0); // 已观看时间（秒）
-const startTime = ref(0); // 开始播放的时间戳
-const lastPlayedTime = ref(0); // 上次暂停时的时间
+const isPlaying = ref(false)
+const timerInterval = ref<number | null>(null)
+const watchedTime = ref(0) // 已观看时间（秒）
+const startTime = ref(0) // 开始播放的时间戳
+const lastPlayedTime = ref(0) // 上次暂停时的时间
 
 // 视频信息
 const videoData = ref<VideoResponse>({
   video_id: null,
-  video_title: "",
-  video_description: "",
-  video_url: "",
+  video_title: '',
+  video_description: '',
+  video_url: '',
   video_duration: null,
-  teacher_name: "",
-  course_name: "",
-});
+  teacher_name: '',
+  course_name: '',
+})
 const progressData = ref<Progress>({
   progress_id: null,
   student_id: null,
   video_id: null,
   progress: null,
   completed: false,
-});
+})
 
 // 1.返回上一页
 const goBack = () => {
-  router.go(-1);
-};
+  router.go(-1)
+}
 // 完成率计算
 const completionRate = computed(() => {
-  if (videoData.value.video_duration === 0) return 0;
+  if (videoData.value.video_duration === 0) return 0
 
   return Math.min(
     100,
-    Math.round((watchedTime.value / videoData.value.video_duration) * 100)
-  );
-});
+    Math.round((watchedTime.value / videoData.value.video_duration) * 100),
+  )
+})
 
 // 进度百分比
 const progressPercentage = computed(() => {
-  if (videoData.value.video_duration === 0) return 0;
+  if (videoData.value.video_duration === 0) return 0
   return Math.min(
     100,
-    Math.round((watchedTime.value / videoData.value.video_duration) * 100)
-  );
-});
+    Math.round((watchedTime.value / videoData.value.video_duration) * 100),
+  )
+})
 
 // 格式化时间 (秒 -> 分:秒)
 const formatTime = (seconds: number) => {
-  const mins = Math.floor(seconds / 60);
-  const secs = Math.floor(seconds % 60);
-  return `${mins}:${secs < 10 ? "0" : ""}${secs}`;
-};
+  const mins = Math.floor(seconds / 60)
+  const secs = Math.floor(seconds % 60)
+  return `${mins}:${secs < 10 ? '0' : ''}${secs}`
+}
 
 // 开始计时
 const startTimer = () => {
-  if (!videoPlayer.value) return;
+  if (!videoPlayer.value) return
 
-  isPlaying.value = true;
+  isPlaying.value = true
 
   // 记录开始播放的时间点
-  startTime.value = Date.now();
+  startTime.value = Date.now()
 
   // 清除之前的计时器
   if (timerInterval.value) {
-    clearInterval(timerInterval.value);
+    clearInterval(timerInterval.value)
   }
 
   // 设置新的计时器
   timerInterval.value = setInterval(() => {
-    if (!videoPlayer.value) return;
+    if (!videoPlayer.value) return
 
     // 计算实际观看时间（防止用户拖动进度条作弊）
-    const currentPlayTime = videoPlayer.value.currentTime;
+    const currentPlayTime = videoPlayer.value.currentTime
 
     // 如果当前播放时间大于上次记录的时间，说明是正常播放
     if (currentPlayTime > lastPlayedTime.value) {
-      watchedTime.value += 1; // 每秒增加1秒观看时间
+      watchedTime.value += 1 // 每秒增加1秒观看时间
     }
 
-    lastPlayedTime.value = currentPlayTime;
-  }, 1000) as unknown as number;
-};
+    lastPlayedTime.value = currentPlayTime
+  }, 1000) as unknown as number
+}
 
 // 暂停计时
 const pauseTimer = () => {
-  isPlaying.value = false;
+  isPlaying.value = false
 
   if (timerInterval.value) {
-    clearInterval(timerInterval.value);
-    timerInterval.value = null;
+    clearInterval(timerInterval.value)
+    timerInterval.value = null
   }
-};
+}
 
 // 视频结束
 const videoEnded = async () => {
-  pauseTimer();
+  pauseTimer()
 
   // 计算观看完成率
   const completionRate = Math.round(
-    (watchedTime.value / videoData.value.video_duration) * 100
-  );
-  const completed = completionRate == 100 ? 1 : 0;
-  const progress = watchedTime.value / videoData.value.video_duration;
+    (watchedTime.value / videoData.value.video_duration) * 100,
+  )
+  const completed = completionRate == 100 ? 1 : 0
+  const progress = watchedTime.value / videoData.value.video_duration
 
   if (progress != progressData.value.progress) {
     notificationStore.setNotification({
-      message: "观看时长已记录",
-      type: "success",
-    });
+      message: '观看时长已记录',
+      type: 'success',
+    })
   }
-  const res = await $fetch<VideoGet>(
+  await $fetch<VideoGet>(
     `/api/student/${route.params.id}/course-video/${route.params.videoId}`,
     {
-      method: "post",
+      method: 'post',
       params: {
         id: route.params.videoId,
         student_id: userStore.user.id,
         completed: completed,
         progress: progress,
       },
-    }
-  );
-};
+    },
+  )
+}
 
 // 加载视频
 const loadVideo = () => {
-  isLoading.value = true;
+  isLoading.value = true
 
   // 模拟视频加载延迟
   setTimeout(() => {
-    videoSource.value = `/_nuxt/assets/videos/${videoData.value.video_url}`;
-    isLoading.value = false;
-  }, 1000);
-};
+    videoSource.value = `/_nuxt/assets/videos/${videoData.value.video_url}`
+    isLoading.value = false
+  }, 1000)
+}
 watch(
   () => route.params.videoId,
   (newVideoId) => {
     if (newVideoId) {
-      loadVideo();
+      loadVideo()
     }
   },
-  { immediate: true }
-);
+  { immediate: true },
+)
 
 onMounted(async () => {
   const res = await $fetch<VideoGet>(
     `/api/student/${route.params.id}/course-video/${route.params.videoId}`,
     {
-      method: "GET",
-    }
-  );
-  videoData.value = res.video[0];
-  progressData.value = res.progress[0];
-  watchedTime.value =
-    progressData.value.progress * videoData.value.video_duration;
-});
+      method: 'GET',
+    },
+  )
+  videoData.value = res.video[0]
+  progressData.value = res.progress[0]
+  watchedTime.value
+    = progressData.value.progress * videoData.value.video_duration
+})
 
 // 组件卸载
 onUnmounted(() => {
   if (timerInterval.value) {
-    clearInterval(timerInterval.value);
+    clearInterval(timerInterval.value)
   }
-  videoEnded();
-});
+  videoEnded()
+})
 </script>
 
 <style scoped>

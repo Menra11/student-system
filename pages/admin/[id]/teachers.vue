@@ -9,11 +9,11 @@
             type="text"
             placeholder="搜索教师..."
             class="px-4 py-2 border rounded-md"
-          />
+          >
         </div>
         <button
-          @click="refreshData"
           class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+          @click="refreshData"
         >
           刷新数据
         </button>
@@ -22,7 +22,11 @@
       <!-- 数据表格 -->
       <div class="overflow-x-auto rounded-lg shadow">
         <table class="min-w-full divide-y divide-gray-200">
-          <thead class="bg-blue-100" align="center" valign="middle">
+          <thead
+            class="bg-blue-100"
+            align="center"
+            valign="middle"
+          >
             <tr>
               <th class="px-3 py-4 text-sm whitespace-nowrap text-blue-700">
                 教师ID
@@ -85,8 +89,7 @@
                 <NuxtLink
                   :to="`/admin/${route.params.id}/teacher/${teacher.teacher_id}`"
                   class="text-blue-500 hover:text-blue-700 mr-3 transition-colors"
-                  >查看</NuxtLink
-                >
+                >查看</NuxtLink>
                 <!-- <button
                   @click="openEditDialog(teacher)"
                   class="text-green-500 hover:text-green-700 mr-3 transition-colors"
@@ -104,31 +107,25 @@
           </tbody>
         </table>
       </div>
-      
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { useMyNotificationStore } from "@/stores/notification";
-
 import type {
   Teacher,
-  TeacherResponse,
-  TeachersResponse
-} from "~/types/teacher";
+  TeachersResponse,
+} from '~/types/teacher'
 
-const route = useRoute();
-
-const notificationStore = useMyNotificationStore();
+const route = useRoute()
 
 definePageMeta({
-  title: "教师管理", // 设置页面标题
-});
+  title: '教师管理', // 设置页面标题
+})
 
 // 数据状态
-const teachers = ref<Teacher[]>([]);
-const searchQuery = ref("");
+const teachers = ref<Teacher[]>([])
+const searchQuery = ref('')
 
 // // 加载状态
 // const isLoading = ref(false);
@@ -142,43 +139,43 @@ const searchQuery = ref("");
 
 // 获取教师数据
 const fetchTeachers = async () => {
-  const { Teachers } = await $fetch<TeachersResponse>("/api/admin/teachers", {
-    method: "GET",
-  });
+  const { Teachers } = await $fetch<TeachersResponse>('/api/admin/teachers', {
+    method: 'GET',
+  })
   if (Teachers) {
-    teachers.value = Teachers;
+    teachers.value = Teachers
   }
-};
+}
 // 过滤后的教师数据
 const filteredteachers = computed(() => {
   let result = teachers.value
   // 按搜索词过滤
   if (searchQuery.value) {
-    const query = searchQuery.value.toLowerCase();
+    const query = searchQuery.value.toLowerCase()
     result = result.filter(
-      (t) =>
-        t.teacher_name.toLowerCase().includes(query) ||
-        t.teacher_id.toString().includes(query) ||
-        (t.phone && t.phone.includes(query)) ||
-        (t.email && t.email.toLowerCase().includes(query))
-    );
+      t =>
+        t.teacher_name.toLowerCase().includes(query)
+        || t.teacher_id.toString().includes(query)
+        || (t.phone && t.phone.includes(query))
+        || (t.email && t.email.toLowerCase().includes(query)),
+    )
   }
-  return result;
-});
+  return result
+})
 
 // 格式化日期
 const formatDate = (dateString: string) => {
-  if (!dateString) return "";
-  const date = new Date(dateString);
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-  return `${year}/${month}/${day}`;
-};
+  if (!dateString) return ''
+  const date = new Date(dateString)
+  const year = date.getFullYear()
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const day = String(date.getDate()).padStart(2, '0')
+  return `${year}/${month}/${day}`
+}
 
 const refreshData = () => {
-  fetchTeachers();
-};
+  fetchTeachers()
+}
 
 // // 打开编辑对话框
 // const openEditDialog = (teacher: Teacher) => {
@@ -292,15 +289,14 @@ const refreshData = () => {
 //   }
 // };
 
-
 onUpdated(() => {
-  fetchTeachers();
-});
+  fetchTeachers()
+})
 
 // 初始化
 onMounted(() => {
-  fetchTeachers();
-});
+  fetchTeachers()
+})
 </script>
 
 <style scoped></style>

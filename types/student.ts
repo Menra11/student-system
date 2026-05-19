@@ -1,34 +1,34 @@
 // types/student.ts
 export interface Student {
-  student_id: number;
-  student_name: string;
-  gender: string;
-  birth_date: string;
-  class_id: number;
-  class_name: string;
-  phone: string;
-  email: string;
+  student_id: number
+  student_name: string
+  gender: string
+  birth_date: string
+  class_id: number
+  class_name: string
+  phone: string
+  email: string
 }
 
 export interface Class {
-  class_id: number;
-  class_name: string;
+  class_id: number
+  class_name: string
 }
 
 export interface Pagination {
-  total: number;
-  total_pages: number;
+  total: number
+  total_pages: number
 }
 
 export interface StudentsResponse {
-  Students: Student[];
+  Students: Student[]
 }
 export interface StudentResponse {
-  Student: Student;
+  Student: Student
 }
 
 export interface ClassResponse {
-  Classes: Class[];
+  Classes: Class[]
 }
 
 // [id]
@@ -40,7 +40,7 @@ export interface Score {
   score: number
   semester: string
 }
-export interface StudentGet  {
+export interface StudentGet {
   Student: Student
   Scores: Score[]
 }

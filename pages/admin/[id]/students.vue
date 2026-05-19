@@ -9,9 +9,14 @@
             type="text"
             placeholder="搜索学生..."
             class="px-4 py-2 border rounded-md"
-          />
-          <select v-model="classFilter" class="px-4 py-2 border rounded-md">
-            <option value="">所有班级</option>
+          >
+          <select
+            v-model="classFilter"
+            class="px-4 py-2 border rounded-md"
+          >
+            <option value="">
+              所有班级
+            </option>
             <option
               v-for="cls in classes"
               :key="cls.class_id"
@@ -22,8 +27,8 @@
           </select>
         </div>
         <button
-          @click="refreshData"
           class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+          @click="refreshData"
         >
           刷新数据
         </button>
@@ -32,7 +37,11 @@
       <!-- 数据表格 -->
       <div class="overflow-x-auto rounded-lg shadow">
         <table class="min-w-full divide-y divide-gray-200">
-          <thead class="bg-blue-100" align="center" valign="middle">
+          <thead
+            class="bg-blue-100"
+            align="center"
+            valign="middle"
+          >
             <tr>
               <th class="px-3 py-4 text-sm whitespace-nowrap text-blue-700">
                 学号
@@ -95,17 +104,16 @@
                 <NuxtLink
                   :to="`/admin/${route.params.id}/student/${student.student_id}`"
                   class="text-blue-500 hover:text-blue-700 mr-3 transition-colors"
-                  >查看</NuxtLink
-                >
+                >查看</NuxtLink>
                 <button
-                  @click="openEditDialog(student)"
                   class="text-green-500 hover:text-green-700 mr-3 transition-colors"
+                  @click="openEditDialog(student)"
                 >
                   编辑
                 </button>
                 <button
-                  @click="openDeleteDialog(student)"
                   class="text-red-500 hover:text-red-700 transition-colors"
+                  @click="openDeleteDialog(student)"
                 >
                   删除
                 </button>
@@ -124,27 +132,27 @@
         </div>
         <div class="flex space-x-2">
           <button
-            @click="prevPage"
             :disabled="page === 1"
             class="px-4 py-2 border rounded-md disabled:opacity-50"
+            @click="prevPage"
           >
             上一页
           </button>
           <button
             v-for="pageNum in visiblePages"
             :key="pageNum"
-            @click="goToPage(pageNum)"
             :class="[
               'px-4 py-2 border rounded-md',
               pageNum === page ? 'bg-blue-500 text-white' : '',
             ]"
+            @click="goToPage(pageNum)"
           >
             {{ pageNum }}
           </button>
           <button
-            @click="nextPage"
             :disabled="page === pagination.total_pages"
             class="px-4 py-2 border rounded-md disabled:opacity-50"
+            @click="nextPage"
           >
             下一页
           </button>
@@ -179,18 +187,27 @@
             <!-- 头部装饰 -->
             <div class="pl-6 py-6 text-center">
               <h1 class="text-2xl font-bold text-white">
-                <font-awesome-icon :icon="['fas', 'user-plus']" class="mr-2" />
+                <font-awesome-icon
+                  :icon="['fas', 'user-plus']"
+                  class="mr-2"
+                />
                 编辑学生信息
               </h1>
             </div>
             <button
-              @click="closeEditDialog"
               class="pr-6 text-gray-500 hover:text-gray-700 transition-colors"
+              @click="closeEditDialog"
             >
-              <font-awesome-icon :icon="['fas', 'times']" class="mr-2" />
+              <font-awesome-icon
+                :icon="['fas', 'times']"
+                class="mr-2"
+              />
             </button>
           </div>
-          <form class="p-4" @submit.prevent="updateStudent">
+          <form
+            class="p-4"
+            @submit.prevent="updateStudent"
+          >
             <div class="flex flex-row flex-wrap">
               <!-- 学号 -->
               <div class="basis-1/2 p-2">
@@ -198,7 +215,10 @@
                   class="block text-gray-700 text-sm font-medium mb-2"
                   for="student_id"
                 >
-                  <font-awesome-icon :icon="['fas', 'id-card']" class="mr-1" />
+                  <font-awesome-icon
+                    :icon="['fas', 'id-card']"
+                    class="mr-1"
+                  />
                   学号
                 </label>
                 <input
@@ -207,7 +227,7 @@
                   type="text"
                   class="w-full px-3 py-2 border rounded-md focus:ring-blue-500 focus:border-blue-500"
                   disabled
-                />
+                >
               </div>
               <!-- 姓名 -->
               <div class="basis-1/2 p-2">
@@ -215,7 +235,10 @@
                   class="block text-gray-700 text-sm font-medium mb-2"
                   for="student_name"
                 >
-                  <font-awesome-icon :icon="['fas', 'user']" class="mr-1" />
+                  <font-awesome-icon
+                    :icon="['fas', 'user']"
+                    class="mr-1"
+                  />
                   姓名
                 </label>
                 <input
@@ -224,7 +247,7 @@
                   type="text"
                   class="w-full px-3 py-2 border rounded-md focus:ring-blue-500 focus:border-blue-500"
                   required
-                />
+                >
               </div>
               <!-- 性别 -->
               <div class="basis-1/2 p-2">
@@ -240,12 +263,12 @@
                   <!-- 男性选项 -->
                   <label>
                     <input
+                      v-model="currentStudent.gender"
                       type="radio"
                       name="gender"
                       value="男"
-                      v-model="currentStudent.gender"
                       class="hidden"
-                    />
+                    >
                     <div class="flex flex-col items-center">
                       <div
                         class="w-8 h-8 rounded-full flex items-center justify-center text-xl transition-all duration-300"
@@ -262,12 +285,12 @@
                   <!-- 女性选项 -->
                   <label>
                     <input
+                      v-model="currentStudent.gender"
                       type="radio"
                       name="gender"
                       value="女"
-                      v-model="currentStudent.gender"
                       class="hidden"
-                    />
+                    >
                     <div class="flex flex-col items-center">
                       <div
                         class="w-8 h-8 rounded-full flex items-center justify-center text-xl transition-all duration-300"
@@ -301,7 +324,7 @@
                   type="date"
                   class="w-full px-3 py-2 border rounded-md focus:ring-blue-500 focus:border-blue-500"
                   required
-                />
+                >
               </div>
               <!-- 班级 -->
               <div class="basis-1/2 p-2">
@@ -334,7 +357,10 @@
                   class="block text-gray-700 text-sm font-medium mb-2"
                   for="phone"
                 >
-                  <font-awesome-icon :icon="['fas', 'phone']" class="mr-1" />
+                  <font-awesome-icon
+                    :icon="['fas', 'phone']"
+                    class="mr-1"
+                  />
                   联系电话
                 </label>
                 <input
@@ -343,7 +369,7 @@
                   type="tel"
                   class="w-full px-3 py-2 border rounded-md focus:ring-blue-500 focus:border-blue-500"
                   placeholder="请输入手机号码"
-                />
+                >
               </div>
               <!-- 邮箱 -->
               <div class="basis-1/1 p-2">
@@ -351,7 +377,10 @@
                   class="block text-gray-700 text-sm font-medium mb-2"
                   for="email"
                 >
-                  <font-awesome-icon :icon="['fas', 'envelope']" class="mr-1" />
+                  <font-awesome-icon
+                    :icon="['fas', 'envelope']"
+                    class="mr-1"
+                  />
                   电子邮箱
                 </label>
                 <input
@@ -359,15 +388,15 @@
                   type="email"
                   class="w-full px-3 py-2 border rounded-md focus:ring-blue-500 focus:border-blue-500"
                   placeholder="example@domain.com"
-                />
+                >
               </div>
             </div>
             <!-- 按钮 -->
             <div class="mt-6 flex justify-end space-x-3">
               <button
                 type="button"
-                @click="closeEditDialog"
                 class="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-100 transition-colors"
+                @click="closeEditDialog"
               >
                 取消
               </button>
@@ -376,7 +405,10 @@
                 :disabled="isUpdating"
                 class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
-                <span v-if="isUpdating" class="flex items-center">
+                <span
+                  v-if="isUpdating"
+                  class="flex items-center"
+                >
                   <font-awesome-icon
                     :icon="['fas', 'spinner']"
                     class="animate-spin mr-2"
@@ -399,12 +431,17 @@
           class="bg-white rounded-lg shadow-xl w-full max-w-md p-6 transform transition-transform duration-300 scale-100"
         >
           <div class="flex justify-between items-center mb-4">
-            <h3 class="text-lg font-semibold text-gray-800">删除确认</h3>
+            <h3 class="text-lg font-semibold text-gray-800">
+              删除确认
+            </h3>
             <button
-              @click="closeDeleteDialog"
               class="text-gray-500 hover:text-gray-700 transition-colors"
+              @click="closeDeleteDialog"
             >
-              <font-awesome-icon :icon="['fas', 'times']" class="mr-2" />
+              <font-awesome-icon
+                :icon="['fas', 'times']"
+                class="mr-2"
+              />
             </button>
           </div>
 
@@ -416,17 +453,20 @@
 
           <div class="flex justify-end space-x-3">
             <button
-              @click="closeDeleteDialog"
               class="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-100 transition-colors"
+              @click="closeDeleteDialog"
             >
               取消
             </button>
             <button
-              @click="confirmDelete"
               :disabled="isDeleting"
               class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              @click="confirmDelete"
             >
-              <span v-if="isDeleting" class="flex items-center">
+              <span
+                v-if="isDeleting"
+                class="flex items-center"
+              >
                 <font-awesome-icon
                   :icon="['fas', 'spinner']"
                   class="animate-spin mr-2"
@@ -443,7 +483,7 @@
 </template>
 
 <script setup lang="ts">
-import { useMyNotificationStore } from "@/stores/notification";
+import { useMyNotificationStore } from '@/stores/notification'
 
 import type {
   Student,
@@ -451,279 +491,288 @@ import type {
   Pagination,
   StudentsResponse,
   ClassResponse,
-} from "~/types/student";
+} from '~/types/student'
 
-const route = useRoute();
+const route = useRoute()
 
-const notificationStore = useMyNotificationStore();
+const notificationStore = useMyNotificationStore()
 
 definePageMeta({
-  title: "学生管理", // 设置页面标题
-});
+  title: '学生管理', // 设置页面标题
+})
 
 // 数据状态
-const students = ref<Student[]>([]);
-const classes = ref<Class[]>([]);
-const searchQuery = ref("");
-const classFilter = ref("");
-const page = ref(1);
-const limit = ref(10);
+const students = ref<Student[]>([])
+const classes = ref<Class[]>([])
+const searchQuery = ref('')
+const classFilter = ref('')
+const page = ref(1)
+const limit = ref(10)
 const pagination = ref<Pagination>({
   total: 0,
   total_pages: 1,
-});
+})
 const viewPagination = ref<Pagination>({
   total: 0,
   total_pages: 1,
-});
+})
 
 // 加载状态
-const isLoading = ref(false);
-const isUpdating = ref(false);
-const isDeleting = ref(false);
+const isLoading = ref(false)
+const isUpdating = ref(false)
+const isDeleting = ref(false)
 
 // 编辑和删除状态
-const isEditDialogOpen = ref(false);
-const isDeleteDialogOpen = ref(false);
-const currentStudent = ref<Student>();
+const isEditDialogOpen = ref(false)
+const isDeleteDialogOpen = ref(false)
+const currentStudent = ref<Student>()
 
 // 获取班级数据
 const fetchClasses = async () => {
-  const { Classes } = await $fetch<ClassResponse>("/api/admin/classes", {
-    method: "get",
-  });
+  const { Classes } = await $fetch<ClassResponse>('/api/admin/classes', {
+    method: 'get',
+  })
   if (Classes) {
-    classes.value = Classes;
+    classes.value = Classes
   }
-};
+}
 
 // 获取学生数据
 const fetchStudents = async () => {
-  const { Students } = await $fetch<StudentsResponse>("/api/admin/students", {
-    method: "GET",
-  });
+  const { Students } = await $fetch<StudentsResponse>('/api/admin/students', {
+    method: 'GET',
+  })
   if (Students) {
-    students.value = Students;
+    students.value = Students
     pagination.value = {
       total: students.value.length,
       total_pages: Math.ceil(students.value.length / limit.value),
-    };
+    }
     viewPagination.value = {
       total: students.value.length,
       total_pages: Math.ceil(students.value.length / limit.value),
-    };
+    }
   }
-};
+}
 // 过滤后的学生数据
 const filteredStudents = computed(() => {
   let result = students.value.slice(
     (page.value - 1) * limit.value,
-    Math.min(page.value * limit.value, pagination.value.total)
-  );
+    Math.min(page.value * limit.value, pagination.value.total),
+  )
   // 按班级过滤
   if (classFilter.value) {
-    result = result.filter((s) => s.class_id === Number(classFilter.value));
+    result = result.filter(s => s.class_id === Number(classFilter.value))
   }
   // 按搜索词过滤
   if (searchQuery.value) {
-    const query = searchQuery.value.toLowerCase();
+    const query = searchQuery.value.toLowerCase()
     result = result.filter(
-      (s) =>
-        s.student_name.toLowerCase().includes(query) ||
-        s.student_id.toString().includes(query) ||
-        (s.phone && s.phone.includes(query)) ||
-        (s.email && s.email.toLowerCase().includes(query))
-    );
+      s =>
+        s.student_name.toLowerCase().includes(query)
+        || s.student_id.toString().includes(query)
+        || (s.phone && s.phone.includes(query))
+        || (s.email && s.email.toLowerCase().includes(query)),
+    )
   }
-  return result;
-});
+  return result
+})
 watchEffect(() => {
-  const result = filteredStudents.value;
+  const result = filteredStudents.value
   viewPagination.value = {
     total: result.length,
     total_pages: Math.ceil(result.length / limit.value),
-  };
-});
+  }
+})
 // 分页相关
 const visiblePages = computed(() => {
-  const pages = [];
-  const current = page.value;
-  const total = pagination.value.total_pages;
+  const pages = []
+  const current = page.value
+  const total = pagination.value.total_pages
 
   if (total <= 5) {
     for (let i = 1; i <= total; i++) {
-      pages.push(i);
+      pages.push(i)
     }
-  } else {
+  }
+  else {
     if (current <= 3) {
-      pages.push(1, 2, 3, 4, "...", total);
-    } else if (current >= total - 2) {
-      pages.push(1, "...", total - 3, total - 2, total - 1, total);
-    } else {
-      pages.push(1, "...", current - 1, current, current + 1, "...", total);
+      pages.push(1, 2, 3, 4, '...', total)
+    }
+    else if (current >= total - 2) {
+      pages.push(1, '...', total - 3, total - 2, total - 1, total)
+    }
+    else {
+      pages.push(1, '...', current - 1, current, current + 1, '...', total)
     }
   }
 
-  return pages;
-});
+  return pages
+})
 
 const prevPage = () => {
   if (page.value > 1) {
-    page.value--;
-    fetchStudents();
+    page.value--
+    fetchStudents()
   }
-};
+}
 
 const nextPage = () => {
   if (page.value < pagination.value.total_pages) {
-    page.value++;
-    fetchStudents();
+    page.value++
+    fetchStudents()
   }
-};
+}
 
 const goToPage = (pageNum: number | string) => {
-  if (typeof pageNum === "number") {
-    page.value = pageNum;
-    fetchStudents();
+  if (typeof pageNum === 'number') {
+    page.value = pageNum
+    fetchStudents()
   }
-};
+}
 
 // 格式化日期
 const formatDate = (dateString: string) => {
-  if (!dateString) return "";
-  const date = new Date(dateString);
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-  return `${year}/${month}/${day}`;
-};
+  if (!dateString) return ''
+  const date = new Date(dateString)
+  const year = date.getFullYear()
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const day = String(date.getDate()).padStart(2, '0')
+  return `${year}/${month}/${day}`
+}
 
 const refreshData = () => {
-  fetchStudents();
-  fetchClasses();
-};
+  fetchStudents()
+  fetchClasses()
+}
 
 // 打开编辑对话框
 const openEditDialog = (student: Student) => {
-  currentStudent.value = { ...student };
+  currentStudent.value = { ...student }
   currentStudent.value.birth_date = formatDate(student.birth_date).replace(
     /\//g,
-    "-"
-  );
-  isEditDialogOpen.value = true;
-};
+    '-',
+  )
+  isEditDialogOpen.value = true
+}
 
 // 关闭编辑对话框
 const closeEditDialog = () => {
-  isEditDialogOpen.value = false;
-  isUpdating.value = false;
-};
+  isEditDialogOpen.value = false
+  isUpdating.value = false
+}
 
 // 更新学生信息
 const updateStudent = async () => {
-  isUpdating.value = true;
+  isUpdating.value = true
 
   try {
     // 发送更新请求
     const response = await $fetch(
       `/api/student/${currentStudent.value.student_id}`,
       {
-        method: "PUT",
+        method: 'PUT',
         body: { Student: currentStudent.value },
-      }
-    );
-    console.log(response);
+      },
+    )
+    console.log(response)
 
     if (response.success) {
       notificationStore.setNotification({
-        message: "学生信息更新成功",
-        type: "success",
-      });
-      closeEditDialog();
-    } else {
-      notificationStore.setNotification({
-        message: `更新失败: ${response.message || "未知错误"}`,
-        type: "error",
-      });
+        message: '学生信息更新成功',
+        type: 'success',
+      })
+      closeEditDialog()
     }
-  } catch (error) {
-    console.error("更新学生信息失败:", error);
-    notificationStore.setNotification({
-      message: `更新失败: ${error.message || "未知错误"}`,
-      type: "error",
-    });
-  } finally {
-    isUpdating.value = false;
+    else {
+      notificationStore.setNotification({
+        message: `更新失败: ${response.message || '未知错误'}`,
+        type: 'error',
+      })
+    }
   }
-};
+  catch (error) {
+    console.error('更新学生信息失败:', error)
+    notificationStore.setNotification({
+      message: `更新失败: ${error.message || '未知错误'}`,
+      type: 'error',
+    })
+  }
+  finally {
+    isUpdating.value = false
+  }
+}
 
 // 打开删除对话框
 const openDeleteDialog = (student: Student) => {
-  currentStudent.value = { ...student };
-  isDeleteDialogOpen.value = true;
-};
+  currentStudent.value = { ...student }
+  isDeleteDialogOpen.value = true
+}
 
 // 关闭删除对话框
 const closeDeleteDialog = () => {
-  isDeleteDialogOpen.value = false;
-  isDeleting.value = false;
-};
+  isDeleteDialogOpen.value = false
+  isDeleting.value = false
+}
 
 // 确认删除
 const confirmDelete = async () => {
-  isDeleting.value = true;
+  isDeleting.value = true
 
   try {
     // 发送删除请求
     const response = await $fetch(
       `/api/student/${currentStudent.value.student_id}`,
       {
-        method: "DELETE",
-      }
-    );
+        method: 'DELETE',
+      },
+    )
 
     if (response.success) {
       // 从本地数据中移除
       students.value = students.value.filter(
-        (s) => s.student_id !== currentStudent.value.student_id
-      );
+        s => s.student_id !== currentStudent.value.student_id,
+      )
 
       // 检查当前页是否还有数据
       if (filteredStudents.value.length === 0 && page.value > 1) {
-        page.value--;
+        page.value--
       }
 
       notificationStore.setNotification({
-        message: "学生删除成功",
-        type: "success",
-      });
-      closeDeleteDialog();
-    } else {
-      notificationStore.setNotification({
-        message: `更新失败: ${response.message || "未知错误"}`,
-        type: "error",
-      });
+        message: '学生删除成功',
+        type: 'success',
+      })
+      closeDeleteDialog()
     }
-  } catch (error: any) {
-    console.error("删除学生失败:", error);
-    notificationStore.setNotification({
-      message: `更新失败: ${error.message || "未知错误"}`,
-      type: "error",
-    });
-  } finally {
-    isDeleting.value = false;
+    else {
+      notificationStore.setNotification({
+        message: `更新失败: ${response.message || '未知错误'}`,
+        type: 'error',
+      })
+    }
   }
-};
+  catch (error) {
+    console.error('删除学生失败:', error)
+    notificationStore.setNotification({
+      message: `更新失败: ${error.message || '未知错误'}`,
+      type: 'error',
+    })
+  }
+  finally {
+    isDeleting.value = false
+  }
+}
 
 onUpdated(() => {
-  fetchStudents();
-});
+  fetchStudents()
+})
 
 // 初始化
 onMounted(() => {
-  fetchStudents();
-  fetchClasses();
-});
+  fetchStudents()
+  fetchClasses()
+})
 </script>
 
 <style scoped></style>

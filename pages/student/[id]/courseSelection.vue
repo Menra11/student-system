@@ -4,43 +4,45 @@
     <div class="mb-6 bg-blue-50 p-4 rounded-lg">
       <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1"
-            >课程名称</label
-          >
+          <label class="block text-sm font-medium text-gray-700 mb-1">课程名称</label>
           <input
             v-model="searchParams.courseName"
             type="text"
             placeholder="搜索课程..."
             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
+          >
         </div>
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1"
-            >学分</label
-          >
+          <label class="block text-sm font-medium text-gray-700 mb-1">学分</label>
           <select
             v-model="searchParams.credit"
             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
-            <option value="">全部</option>
-            <option v-for="c in [1, 2, 3, 4, 5]" :value="c">{{ c }}学分</option>
+            <option value="">
+              全部
+            </option>
+            <option
+              v-for="(c, index) in [1, 2, 3, 4, 5]"
+              :key="index"
+              :value="c"
+            >
+              {{ c }}学分
+            </option>
           </select>
         </div>
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1"
-            >教师</label
-          >
+          <label class="block text-sm font-medium text-gray-700 mb-1">教师</label>
           <input
             v-model="searchParams.teacher"
             type="text"
             placeholder="教师姓名..."
             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
+          >
         </div>
         <div class="flex items-end">
           <button
-            @click="resetFilters"
             class="w-full bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-4 rounded-md transition-colors"
+            @click="resetFilters"
           >
             重置筛选
           </button>
@@ -86,7 +88,10 @@
           </tr>
         </thead>
         <tbody class="bg-white divide-y divide-gray-200">
-          <tr v-for="course in filteredCourses" :key="course.course_id">
+          <tr
+            v-for="course in filteredCourses"
+            :key="course.course_id"
+          >
             <td class="px-6 py-4">
               <div class="flex items-center">
                 <div
@@ -118,24 +123,34 @@
               </div>
             </td>
             <td class="px-6 py-4">
-              <div class="text-sm text-gray-900">{{ course.schedule }}</div>
-              <div class="text-sm text-gray-500">{{ course.classroom }}</div>
+              <div class="text-sm text-gray-900">
+                {{ course.schedule }}
+              </div>
+              <div class="text-sm text-gray-500">
+                {{ course.classroom }}
+              </div>
             </td>
             <td class="px-6 py-4 whitespace-nowrap text-sm">
               <button
                 v-if="isCourseSelected(course.course_id)"
-                @click="dropCourse(course.course_id)"
                 class="px-3 py-1 bg-red-100 text-red-700 rounded-full hover:bg-red-200 transition-colors flex items-center"
+                @click="dropCourse(course.course_id)"
               >
-                <font-awesome-icon :icon="['fas', 'trash']" class="mr-1" />
+                <font-awesome-icon
+                  :icon="['fas', 'trash']"
+                  class="mr-1"
+                />
                 退选
               </button>
               <button
                 v-else
-                @click="selectCourse(course.course_id)"
                 class="px-3 py-1 bg-blue-100 text-blue-700 rounded-full hover:bg-blue-200 transition-colors flex items-center"
+                @click="selectCourse(course.course_id)"
               >
-                <font-awesome-icon :icon="['fas', 'plus']" class="mr-1" />
+                <font-awesome-icon
+                  :icon="['fas', 'plus']"
+                  class="mr-1"
+                />
                 选课
               </button>
             </td>
@@ -148,7 +163,10 @@
     <div class="mt-8 bg-blue-50 p-6 rounded-lg">
       <div class="flex justify-between items-center mb-4">
         <h3 class="text-lg font-semibold text-blue-800 flex items-center">
-          <font-awesome-icon :icon="['fas', 'check-circle']" class="mr-2" />
+          <font-awesome-icon
+            :icon="['fas', 'check-circle']"
+            class="mr-2"
+          />
           已选课程 ({{ selectedCourses.length }}门)
         </h3>
         <div class="text-sm font-medium">
@@ -160,11 +178,17 @@
         v-if="selectedCourses.length === 0"
         class="text-center py-6 text-gray-500"
       >
-        <font-awesome-icon :icon="['fas', 'inbox']" class="text-3xl mb-2" />
+        <font-awesome-icon
+          :icon="['fas', 'inbox']"
+          class="text-3xl mb-2"
+        />
         <p>您还没有选择任何课程</p>
       </div>
 
-      <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div
+        v-else
+        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+      >
         <div
           v-for="course in selectedCourses"
           :key="course.course_id"
@@ -208,12 +232,15 @@
 
       <div class="mt-6 pt-4 border-t border-blue-200 flex justify-end">
         <button
-          @click="submitSelection"
           class="px-6 py-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-medium rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all flex items-center"
           :disabled="isSubmitting"
+          @click="submitSelection"
         >
           <span v-if="!isSubmitting">确认选课</span>
-          <span v-else class="flex items-center">
+          <span
+            v-else
+            class="flex items-center"
+          >
             <font-awesome-icon
               :icon="['fas', 'spinner']"
               class="animate-spin mr-2"
@@ -227,100 +254,99 @@
 </template>
 
 <script setup lang="ts">
-import type { Course,CoursesResponse } from "@/types/course";
-import type { Teacher } from "@/types/teacher";
+import type { Course, CoursesResponse } from '@/types/course'
+import type { Teacher } from '@/types/teacher'
 
-import { useMyUserStore } from "@/stores/user";
-import { useMyNotificationStore } from "@/stores/notification";
+import { useMyUserStore } from '@/stores/user'
+import { useMyNotificationStore } from '@/stores/notification'
 
-const route = useRoute();
-const router = useRouter();
+const route = useRoute()
 
-const userStore = useMyUserStore();
-const notificationStore = useMyNotificationStore();
+const userStore = useMyUserStore()
+const notificationStore = useMyNotificationStore()
 
 definePageMeta({
-  title: "课程选择",
-});
+  title: '课程选择',
+})
 // 教师数据
-const teachers = ref<Teacher[]>([{ teacher_id: null, teacher_name: "" }]);
+const teachers = ref<Teacher[]>([{ teacher_id: null, teacher_name: '' }])
 
 // 课程数据
 const courses = ref<Course[]>([
   {
     course_id: null,
-    course_name: "",
+    course_name: '',
     credit: null,
     teacher_id: null,
-    classroom: "",
-    schedule: "",
-    description: "",
+    classroom: '',
+    schedule: '',
+    description: '',
     video_id: null,
   },
-]);
+])
 
 // 选课状态
-const selectedCourses = ref([]);
-const isSubmitting = ref(false);
+const selectedCourses = ref([])
+const isSubmitting = ref(false)
 const searchParams = ref({
-  courseName: "",
-  credit: "",
-  teacher: "",
-});
+  courseName: '',
+  credit: '',
+  teacher: '',
+})
 // 获取所有课程
 const getCourses = async () => {
-  const {Courses} = await $fetch<CoursesResponse>("/api/course", {
-    method: "GET",
-  });
-  courses.value = Courses;
+  const { Courses } = await $fetch<CoursesResponse>('/api/course', {
+    method: 'GET',
+  })
+  courses.value = Courses
   // 筛选已选课程
   courses.value = courses.value.filter(
-    (course) =>
+    course =>
       !userStore.user.selectedCourses.some(
-        (selectedCourse) => selectedCourse === course.course_name
-      )
-  );
-};
+        selectedCourse => selectedCourse === course.course_name,
+      ),
+  )
+}
 // 获取所有教师
 const getTeachers = async () => {
-  const response = await $fetch<Teacher[]>("/api/teacher", {
-    method: "GET",
-  });
-  teachers.value = response;
-};
+  const response = await $fetch<Teacher[]>('/api/teacher', {
+    method: 'GET',
+  })
+  teachers.value = response
+}
 // 获取教师姓名
 const getTeacherName = (teacherId) => {
-  const teacher = teachers.value.find((t) => t.teacher_id === teacherId);
-  return teacher ? teacher.teacher_name : "未知教师";
-};
+  const teacher = teachers.value.find(t => t.teacher_id === teacherId)
+  return teacher ? teacher.teacher_name : '未知教师'
+}
 
 // 检查课程是否已选
 const isCourseSelected = (courseId) => {
-  return selectedCourses.value.some((c) => c.course_id === courseId);
-};
+  return selectedCourses.value.some(c => c.course_id === courseId)
+}
 
 // 选择课程
 const selectCourse = (courseId) => {
-  const course = courses.value.find((c) => c.course_id === courseId);
+  const course = courses.value.find(c => c.course_id === courseId)
   if (course) {
     // 检查是否已选
     if (!isCourseSelected(courseId)) {
-      selectedCourses.value.push({ ...course });
+      selectedCourses.value.push({ ...course })
     }
   }
-};
+}
 
 // 退选课程
 const dropCourse = (courseId) => {
   selectedCourses.value = selectedCourses.value.filter(
-    (c) => c.course_id !== courseId
-  );
-};
+    c => c.course_id !== courseId,
+  )
+}
 
 // 计算总学分
 const totalCredits = computed(() => {
-  return selectedCourses.value.reduce((sum, course) => sum + course.credit, 0);
-});
+  return selectedCourses.value.reduce((sum, course) => sum + course.credit, 0)
+})
 
 // 筛选课程
 const filteredCourses = computed(() => {
@@ -329,75 +355,77 @@ const filteredCourses = computed(() => {
       ? course.course_name
           .toLowerCase()
           .includes(searchParams.value.courseName.toLowerCase())
-      : true;
+      : true
 
     const matchesCredit = searchParams.value.credit
       ? course.credit === parseInt(searchParams.value.credit)
-      : true;
+      : true
 
     const matchesTeacher = searchParams.value.teacher
       ? getTeacherName(course.teacher_id)
           .toLowerCase()
           .includes(searchParams.value.teacher.toLowerCase())
-      : true;
+      : true
 
-    return matchesName && matchesCredit && matchesTeacher;
-  });
-});
+    return matchesName && matchesCredit && matchesTeacher
+  })
+})
 
 // 重置筛选条件
 const resetFilters = () => {
   searchParams.value = {
-    courseName: "",
-    credit: "",
-    teacher: "",
-  };
-};
+    courseName: '',
+    credit: '',
+    teacher: '',
+  }
+}
 
 // 提交选课
 const submitSelection = async () => {
   if (selectedCourses.value.length === 0) {
     notificationStore.setNotification({
-      message: "请至少选一门课程",
-      type: "error",
-    });
-    return;
+      message: '请至少选一门课程',
+      type: 'error',
+    })
+    return
   }
 
   try {
-    isSubmitting.value = true;
+    isSubmitting.value = true
 
-    const response = await $fetch(
+    await $fetch(
       `/api/student/${route.params.id}/select-courses`,
       {
-        method: "POST",
+        method: 'POST',
         params: {
-          courses: selectedCourses.value.map((c) => c.course_id),
+          courses: selectedCourses.value.map(c => c.course_id),
         },
-      }
-    );
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+      },
+    )
+    await new Promise(resolve => setTimeout(resolve, 1000))
     notificationStore.setNotification({
-      message: "选课成功",
-      type: "success",
-    });
-    userStore.flashCourses(selectedCourses.value.map((c) => c.course_name));
-    navigateTo("/student/" + userStore.user.id + "");
-  } catch (error) {
-    console.error("选课失败:", error);
-    notificationStore.setNotification({
-      message: "选课失败，请稍后再试",
-      type: "error",
-    });
-  } finally {
-    isSubmitting.value = false;
+      message: '选课成功',
+      type: 'success',
+    })
+    userStore.flashCourses(selectedCourses.value.map(c => c.course_name))
+    navigateTo('/student/' + userStore.user.id + '')
   }
-};
+  catch (error) {
+    console.error('选课失败:', error)
+    notificationStore.setNotification({
+      message: '选课失败，请稍后再试',
+      type: 'error',
+    })
+  }
+  finally {
+    isSubmitting.value = false
+  }
+}
 
 onMounted(() => {
-  getCourses();
-  getTeachers();
-});
+  getCourses()
+  getTeachers()
+})
 </script>
 
 <style scoped>

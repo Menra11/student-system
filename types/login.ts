@@ -1,14 +1,14 @@
 export interface loginData {
-  user_id: number;
-  password: string;
-  user: string;
+  user_id: number
+  password: string
+  user: string
 }
 export interface LoginDataRequest {
-  user_from: loginData;
+  user_from: loginData
 }
 export interface LoginResponse {
-  success: boolean;
-  message?: string;
-  token?: string;
-  errorCode?: string;
+  success: boolean
+  message?: string
+  token?: string
+  errorCode?: string
 }

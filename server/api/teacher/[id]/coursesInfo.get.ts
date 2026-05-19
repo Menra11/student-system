@@ -1,4 +1,5 @@
-import pool from "@/server/api/db";
+import pool from '@/server/api/db'
+
 export default defineEventHandler(async (event) => {
   const id = event.context.params.id
 
@@ -7,9 +8,9 @@ from teacher t
 left join course c on c.teacher_id = t.teacher_id
 where t.teacher_id = ?;
 `
-const [Courses] = await pool.query(query, [id])
+  const [Courses] = await pool.query(query, [id])
 
-return {
-  Courses:Courses
-}
+  return {
+    Courses: Courses,
+  }
 })

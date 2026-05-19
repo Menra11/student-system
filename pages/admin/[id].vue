@@ -1,12 +1,14 @@
 <template>
   <div class="min-h-screen bg-blue-50">
-    <Header />
+    <HeadInfor />
 
     <div class=" mx-auto px-4 py-8 max-w-5xl">
       <!-- 导航卡片 -->
       <div class="bg-white rounded-2xl shadow-blue overflow-hidden mb-8">
         <div class="bg-gradient-to-r from-blue-600 to-blue-700 py-4 px-6">
-          <h2 class="text-xl font-bold text-white">管理员导航</h2>
+          <h2 class="text-xl font-bold text-white">
+            管理员导航
+          </h2>
         </div>
 
         <nav class="p-6 flex flex-wrap gap-4">
@@ -14,14 +16,20 @@
             :to="`/admin/${userStore.user.id}`"
             class="px-5 py-3 border border-gray-200 shadow-blue rounded-lg transition-all duration-300 flex items-center font-medium text-gray-700 hover:bg-blue-50 hover:border-blue-300 focus:bg-blue-100 focus:border-blue-500 focus:text-blue-700"
           >
-            <font-awesome-icon :icon="['fas', 'user-shield']" class="mr-2" />
+            <font-awesome-icon
+              :icon="['fas', 'user-shield']"
+              class="mr-2"
+            />
             管理员信息
           </NuxtLink>
           <NuxtLink
             :to="`/admin/${userStore.user.id}/students`"
             class="px-5 py-3 border border-gray-200 shadow-blue rounded-lg transition-all duration-300 flex items-center font-medium text-gray-700 hover:bg-blue-50 hover:border-blue-300 focus:bg-blue-100 focus:border-blue-500 focus:text-blue-700"
           >
-            <font-awesome-icon :icon="['fas', 'user-graduate']" class="mr-2" />
+            <font-awesome-icon
+              :icon="['fas', 'user-graduate']"
+              class="mr-2"
+            />
             学生管理
           </NuxtLink>
           <NuxtLink
@@ -38,13 +46,19 @@
             :to="`/admin/${userStore.user.id}/courses`"
             class="px-5 py-3 border border-gray-200 shadow-blue rounded-lg transition-all duration-300 flex items-center font-medium text-gray-700 hover:bg-blue-50 hover:border-blue-300 focus:bg-blue-100 focus:border-blue-500 focus:text-blue-700"
           >
-            <font-awesome-icon :icon="['fas', 'book']" class="mr-2" /> 课程管理
+            <font-awesome-icon
+              :icon="['fas', 'book']"
+              class="mr-2"
+            /> 课程管理
           </NuxtLink>
           <NuxtLink
             :to="`/admin/${userStore.user.id}/videos`"
             class="px-5 py-3 border border-gray-200 shadow-blue rounded-lg transition-all duration-300 flex items-center font-medium text-gray-700 hover:bg-blue-50 hover:border-blue-300 focus:bg-blue-100 focus:border-blue-500 focus:text-blue-700"
           >
-            <font-awesome-icon :icon="['fas', 'video']" class="mr-2" /> 视频管理
+            <font-awesome-icon
+              :icon="['fas', 'video']"
+              class="mr-2"
+            /> 视频管理
           </NuxtLink>
         </nav>
       </div>
@@ -71,9 +85,9 @@
 </template>
 
 <script setup lang="ts">
-import Header from "@/components/Header.vue";
-import { useMyUserStore } from "@/stores/user";
-const userStore = useMyUserStore();
+import { useMyUserStore } from '@/stores/user'
+
+const userStore = useMyUserStore()
 </script>
 
 <style scoped>

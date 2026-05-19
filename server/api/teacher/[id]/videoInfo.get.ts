@@ -1,4 +1,5 @@
-import pool from "@/server/api/db";
+import pool from '@/server/api/db'
+
 export default defineEventHandler(async (event) => {
   const id = event.context.params.id
   const query = `select sp.student_id,s.student_name,c.course_id,c.course_name,v.video_title,v.video_duration,sp.progress,sp.completed,sc.score
@@ -10,8 +11,8 @@ left join student s on s.student_id = sp.student_id
 left join score sc on sc.course_id = c.course_id and sc.student_id = sp.student_id
 where t.teacher_id = ?;
 `
-const [VideoInfo] = await pool.query(query, [id])
-return {
-  VideoInfo:VideoInfo
-}
+  const [VideoInfo] = await pool.query(query, [id])
+  return {
+    VideoInfo: VideoInfo,
+  }
 })

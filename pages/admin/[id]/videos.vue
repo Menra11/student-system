@@ -9,11 +9,11 @@
             type="text"
             placeholder="搜索视频..."
             class="px-4 py-2 border rounded-md"
-          />
+          >
         </div>
         <button
-          @click="refreshData"
           class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+          @click="refreshData"
         >
           刷新数据
         </button>
@@ -22,7 +22,11 @@
       <!-- 数据表格 -->
       <div class="overflow-x-auto rounded-lg shadow">
         <table class="min-w-full divide-y divide-gray-200">
-          <thead class="bg-blue-100" align="center" valign="middle">
+          <thead
+            class="bg-blue-100"
+            align="center"
+            valign="middle"
+          >
             <tr>
               <th class="px-3 py-4 text-sm whitespace-nowrap text-blue-700">
                 视频ID
@@ -79,8 +83,7 @@
                 <NuxtLink
                   :to="`/admin/${route.params.id}/videoInfo/${video.video_id}`"
                   class="text-blue-500 hover:text-blue-700 mr-3 transition-colors"
-                  >查看</NuxtLink
-                >
+                >查看</NuxtLink>
                 <!-- <button
                   @click="openEditDialog(video)"
                   class="text-green-500 hover:text-green-700 mr-3 transition-colors"
@@ -98,85 +101,69 @@
           </tbody>
         </table>
       </div>
-      
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { useMyNotificationStore } from "@/stores/notification";
-
 import type {
   Video,
-  VideoResponse,
-  VideosResponse
-} from "~/types/admin/video";
+  VideosResponse,
+} from '~/types/admin/video'
 
-const route = useRoute();
-
-const notificationStore = useMyNotificationStore();
+const route = useRoute()
 
 definePageMeta({
-  title: "视频管理", // 设置页面标题
-});
+  title: '视频管理', // 设置页面标题
+})
 
 // 数据状态
-const videos = ref<Video[]>([]);
-const searchQuery = ref("");
-
-// // 加载状态
-// const isLoading = ref(false);
-// const isUpdating = ref(false);
-// const isDeleting = ref(false);
-
-// // 编辑和删除状态
-// const isEditDialogOpen = ref(false);
-// const isDeleteDialogOpen = ref(false);
-// const currentVideo = ref<Video>();
+const videos = ref<Video[]>([])
+const searchQuery = ref('')
 
 // 格式化时间 (秒 -> 分:秒)
 const formatTime = (seconds: number) => {
-  const mins = Math.floor(seconds / 60);
-  const secs = Math.floor(seconds % 60);
-  return `${mins}:${secs < 10 ? "0" : ""}${secs}`;
-};
+  const mins = Math.floor(seconds / 60)
+  const secs = Math.floor(seconds % 60)
+  return `${mins}:${secs < 10 ? '0' : ''}${secs}`
+}
 // 获取视频数据
 const fetchVideos = async () => {
-  const { Videos } = await $fetch<VideosResponse>("/api/admin/videos", {
-    method: "GET",
-  });
+  const { Videos } = await $fetch<VideosResponse>('/api/admin/videos', {
+    method: 'GET',
+  })
   if (Videos) {
-    videos.value = Videos;
+    videos.value = Videos
   }
-};
+}
 // 过滤后的视频数据
 const filteredvideos = computed(() => {
   let result = videos.value
   // 按搜索词过滤
   if (searchQuery.value) {
-    const query = searchQuery.value.toLowerCase();
+    const query = searchQuery.value.toLowerCase()
     result = result.filter(
-      (v) =>
-        v.video_title.toLowerCase().includes(query) ||
-        v.video_id.toString().includes(query) ||
-        v.video_description.toString().includes(query) 
-    );
+      v =>
+        v.video_title.toLowerCase().includes(query)
+        || v.video_id.toString().includes(query)
+        || v.video_description.toString().includes(query),
+    )
   }
-  return result;
-});
+  return result
+})
 
 const refreshData = () => {
-  fetchVideos();
-};
+  fetchVideos()
+}
 
 onUpdated(() => {
-  fetchVideos();
-});
+  fetchVideos()
+})
 
 // 初始化
 onMounted(() => {
-  fetchVideos();
-});
+  fetchVideos()
+})
 </script>
 
 <style scoped></style>
